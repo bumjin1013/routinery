@@ -5,5 +5,6 @@ import DayOfWeekSelector from "./DayOfWeekSelector";
 import DayOfMonthSelector from "./DayOfMonthSelector";
 import Schedule from "./Schedule";
 import SelectedDate from "./SelectedDate";
+import TotalHabit from "./TotalHabit";
 
-export {Habit, Empty, NoScheduledHabits, DayOfWeekSelector, DayOfMonthSelector, Schedule, SelectedDate};
+export {Habit, Empty, NoScheduledHabits, DayOfWeekSelector, DayOfMonthSelector, Schedule, SelectedDate, TotalHabit};

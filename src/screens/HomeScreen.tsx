@@ -1,5 +1,5 @@
 import {StyleSheet, FlatList, View, Alert} from "react-native";
-import {Habit, Empty, NoScheduledHabits, SelectedDate} from "@/components/habit";
+import {Habit, Empty, NoScheduledHabits, SelectedDate, TotalHabit} from "@/components/habit";
 import {useHabitStore} from "@/store/useHabitStore";
 import {RootStackNavigationProp} from "@/types/navigation";
 import {useSafeAreaInsets} from "react-native-safe-area-context";
@@ -67,9 +67,17 @@ const HomeScreen = ({navigation}: {navigation: RootStackNavigationProp}) => {
   return (
     <View style={[styles.container, {paddingTop: top}]}>
       <SelectedDate onPress={() => setIsCalendarModalVisible(true)} />
+      {habits.length > 0 && <TotalHabit onPress={() => navigation.navigate("AllHabits")} />}
       <FlatList
         data={scheduledHabits}
-        renderItem={({item}) => <Habit habit={item} onPress={() => handleHabitPress(item)} onPressCheck={() => handleHabitCheck(item)} onPressDelete={() => handleDeleteHabit(item)} />}
+        renderItem={({item}) => (
+          <Habit
+            habit={item}
+            onPress={() => handleHabitPress(item)}
+            onPressCheck={() => handleHabitCheck(item)}
+            onPressDelete={() => handleDeleteHabit(item)}
+          />
+        )}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.container}
         ListEmptyComponent={habits.length === 0 ? <Empty /> : <NoScheduledHabits />}
