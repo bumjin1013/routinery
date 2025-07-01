@@ -1,9 +1,10 @@
 import {StyleSheet, View, Modal, Pressable} from "react-native";
 import React from "react";
 import {Dayjs} from "dayjs";
-import {CalendarHeader, WeekHeader, CalendarGrid, ConfirmButton} from "@/components/calendar";
+import {CalendarHeader, WeekHeader, CalendarGrid} from "@/components/calendar";
 import {useCalendar} from "@/hooks/useCalendar";
 import {useHabitStore} from "@/store/useHabitStore";
+import Button from "../button/Button";
 
 interface CalendarProps {
   visible: boolean;
@@ -22,7 +23,7 @@ const CalendarModal = ({visible, onClose, onConfirm}: CalendarProps) => {
 
   const handleConfirm = () => {
     if (selectedDate) {
-      setStoreSelectedDate(selectedDate.toDate());
+      setStoreSelectedDate(selectedDate);
 
       if (onConfirm) {
         onConfirm(selectedDate);
@@ -39,7 +40,7 @@ const CalendarModal = ({visible, onClose, onConfirm}: CalendarProps) => {
           <CalendarHeader currentDate={currentDate} onPreviousMonth={goToPreviousMonth} onNextMonth={goToNextMonth} />
           <WeekHeader />
           <CalendarGrid currentDate={currentDate} selectedDate={selectedDate} onDateSelect={handleDateSelect} />
-          <ConfirmButton selectedDate={selectedDate} onConfirm={handleConfirm} />
+          <Button title="확인" onPress={handleConfirm} disabled={!selectedDate} />
         </View>
       </View>
     </Modal>

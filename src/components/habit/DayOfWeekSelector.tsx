@@ -9,20 +9,21 @@ interface DayOfWeekSelectorProps {
 
 const DayOfWeekSelector = ({selectedDays, onDaysChange}: DayOfWeekSelectorProps) => {
   const dayOptions: {value: DayOfWeek; label: string}[] = [
-    {value: "sunday", label: "일"},
-    {value: "monday", label: "월"},
-    {value: "tuesday", label: "화"},
-    {value: "wednesday", label: "수"},
-    {value: "thursday", label: "목"},
-    {value: "friday", label: "금"},
-    {value: "saturday", label: "토"},
+    {value: 0, label: "일"},
+    {value: 1, label: "월"},
+    {value: 2, label: "화"},
+    {value: 3, label: "수"},
+    {value: 4, label: "목"},
+    {value: 5, label: "금"},
+    {value: 6, label: "토"},
   ];
 
   const handleDayToggle = (day: DayOfWeek) => {
     if (selectedDays.includes(day)) {
       onDaysChange(selectedDays.filter((d) => d !== day));
     } else {
-      onDaysChange([...selectedDays, day]);
+      const newSelectedDays = [...selectedDays, day].sort((a, b) => a - b);
+      onDaysChange(newSelectedDays);
     }
   };
 
@@ -31,11 +32,7 @@ const DayOfWeekSelector = ({selectedDays, onDaysChange}: DayOfWeekSelectorProps)
       <Text style={styles.label}>요일 선택</Text>
       <View style={styles.daysContainer}>
         {dayOptions.map((day) => (
-          <TouchableOpacity
-            key={day.value}
-            style={[styles.dayButton, selectedDays.includes(day.value) && styles.selectedDayButton]}
-            onPress={() => handleDayToggle(day.value)}
-            activeOpacity={0.7}>
+          <TouchableOpacity key={day.value} style={[styles.dayButton, selectedDays.includes(day.value) && styles.selectedDayButton]} onPress={() => handleDayToggle(day.value)} activeOpacity={0.7}>
             <Text style={[styles.dayText, selectedDays.includes(day.value) && styles.selectedDayText]}>{day.label}</Text>
           </TouchableOpacity>
         ))}

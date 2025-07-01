@@ -1,29 +1,49 @@
-import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import {useState} from "react";
+import {StyleSheet, Text, TouchableOpacity} from "react-native";
+import {Habit as HabitType} from "@/types/habit";
+import {useHabitStore} from "@/store/useHabitStore";
 
 interface HabitProps {
-  habit: {
-    id: string;
-    name: string;
-    createdAt: Date;
-  };
+  habit: HabitType;
+  onPress: () => void;
+  onPressCheck: () => void;
+  onPressDelete: () => void;
 }
 
-const Habit = ({habit}: HabitProps) => {
-  const [isChecked, setIsChecked] = useState(false);
-
-  const handleCheck = () => {
-    setIsChecked(!isChecked);
+const Habit = ({habit, onPress, onPressCheck, onPressDelete}: HabitProps) => {
+  const {selectedDate} = useHabitStore();
+  // 반복 주기 정보를 표시하는 함수
+  const getFrequencyText = () => {
+    switch (habit.frequency) {
+      case "daily":
+        return "매일";
+      case "weekly":
+        if (habit.schedule && Array.isArray(habit.schedule)) {
+          const daysOfWeek = ["일", "월", "화", "수", "목", "금", "토"];
+          const selectedDays = habit.schedule.map((day) => daysOfWeek[day]).join(", ");
+          return `매주 ${selectedDays}`;
+        }
+        return "매주";
+      case "monthly":
+        if (habit.schedule && Array.isArray(habit.schedule)) {
+          const selectedDays = habit.schedule.map((day) => `${day}일`).join(", ");
+          return `매월 ${selectedDays}`;
+        }
+        return "매월";
+      default:
+        return "";
+    }
   };
 
+  const isChecked = habit.checkedDate && habit.checkedDate.includes(selectedDate);
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.name}>{habit.name}</Text>
-      <Text style={styles.date}>{habit.createdAt.toLocaleDateString()}</Text>
-      <TouchableOpacity style={[styles.checkButton, {backgroundColor: isChecked ? "#2196F3" : "#4CAF50"}]} onPress={handleCheck}>
+    <TouchableOpacity style={styles.container} onPress={onPress} onLongPress={onPressDelete}>
+      <Text style={styles.name}>{habit.title}</Text>
+      <Text style={styles.frequency}>{getFrequencyText()}</Text>
+      <TouchableOpacity style={[styles.checkButton, {backgroundColor: isChecked ? "#2196F3" : "#9E9E9E"}]} onPress={onPressCheck}>
         <Text style={styles.checkIcon}>✓</Text>
       </TouchableOpacity>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -53,6 +73,12 @@ const styles = StyleSheet.create({
   date: {
     fontSize: 14,
     color: "#666",
+    marginBottom: 4,
+  },
+  frequency: {
+    fontSize: 14,
+    color: "#2196F3",
+    fontWeight: "500",
   },
   checkButton: {
     position: "absolute",
@@ -61,7 +87,7 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: "#4CAF50",
+    backgroundColor: "#9E9E9E",
     justifyContent: "center",
     alignItems: "center",
     shadowColor: "#000",

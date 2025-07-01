@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import {StyleSheet, Text, View, TouchableOpacity} from "react-native";
+import {HabitFrequency} from "@/types/habit";
 
 interface FrequencyOption {
   id: string;
@@ -7,22 +8,19 @@ interface FrequencyOption {
   value: string;
 }
 
-interface FrequencySelectorProps {
-  onFrequencyChange?: (frequency: string) => void;
-  selectedFrequency?: string;
+interface ScheduleProps {
+  onFrequencyChange?: (frequency: HabitFrequency) => void;
+  selectedFrequency?: HabitFrequency;
 }
 
-const FrequencySelector = ({onFrequencyChange, selectedFrequency}: FrequencySelectorProps) => {
-  const [selected, setSelected] = useState(selectedFrequency || "daily");
-
+const Schedule = ({onFrequencyChange, selectedFrequency}: ScheduleProps) => {
   const frequencyOptions: FrequencyOption[] = [
     {id: "daily", label: "매일", value: "daily"},
     {id: "weekly", label: "주간", value: "weekly"},
     {id: "monthly", label: "월간", value: "monthly"},
   ];
 
-  const handleSelect = (frequency: string) => {
-    setSelected(frequency);
+  const handleSelect = (frequency: HabitFrequency) => {
     onFrequencyChange?.(frequency);
   };
 
@@ -31,12 +29,8 @@ const FrequencySelector = ({onFrequencyChange, selectedFrequency}: FrequencySele
       <Text style={styles.label}>빈도 선택</Text>
       <View style={styles.optionsContainer}>
         {frequencyOptions.map((option) => (
-          <TouchableOpacity
-            key={option.id}
-            style={[styles.option, selected === option.value && styles.selectedOption]}
-            onPress={() => handleSelect(option.value)}
-            activeOpacity={0.7}>
-            <Text style={[styles.optionText, selected === option.value && styles.selectedOptionText]}>{option.label}</Text>
+          <TouchableOpacity key={option.id} style={[styles.option, selectedFrequency === option.value && styles.selectedOption]} onPress={() => handleSelect(option.value)} activeOpacity={0.7}>
+            <Text style={[styles.optionText, selectedFrequency === option.value && styles.selectedOptionText]}>{option.label}</Text>
           </TouchableOpacity>
         ))}
       </View>
@@ -44,7 +38,7 @@ const FrequencySelector = ({onFrequencyChange, selectedFrequency}: FrequencySele
   );
 };
 
-export default FrequencySelector;
+export default Schedule;
 
 const styles = StyleSheet.create({
   container: {

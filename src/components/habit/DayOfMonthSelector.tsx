@@ -1,5 +1,5 @@
 import React, {useCallback, useMemo} from "react";
-import {StyleSheet, Text, View, TouchableOpacity, ScrollView} from "react-native";
+import {StyleSheet, Text, View, TouchableOpacity} from "react-native";
 import {DayOfMonth} from "@/types/habit";
 
 interface DayOfMonthSelectorProps {
@@ -15,7 +15,7 @@ const DayOfMonthSelector = ({selectedDays, onDaysChange}: DayOfMonthSelectorProp
       if (selectedDays.includes(day)) {
         onDaysChange(selectedDays.filter((d) => d !== day));
       } else {
-        onDaysChange([...selectedDays, day]);
+        onDaysChange([...selectedDays, day].sort((a, b) => a - b));
       }
     },
     [selectedDays, onDaysChange],
@@ -23,11 +23,7 @@ const DayOfMonthSelector = ({selectedDays, onDaysChange}: DayOfMonthSelectorProp
 
   const renderDayButton = useCallback(
     (day: DayOfMonth) => (
-      <TouchableOpacity
-        key={day}
-        style={[styles.dayButton, selectedDays.includes(day) && styles.selectedDayButton]}
-        onPress={() => handleDayToggle(day)}
-        activeOpacity={0.7}>
+      <TouchableOpacity key={day} style={[styles.dayButton, selectedDays.includes(day) && styles.selectedDayButton]} onPress={() => handleDayToggle(day)} activeOpacity={0.7}>
         <Text style={[styles.dayText, selectedDays.includes(day) && styles.selectedDayText]}>{day}</Text>
       </TouchableOpacity>
     ),
