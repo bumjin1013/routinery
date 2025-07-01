@@ -2,8 +2,8 @@ import React, {useState} from "react";
 import {StyleSheet, Text, View, TextInput, Alert} from "react-native";
 import {useNavigation} from "@react-navigation/native";
 import {RootStackNavigationProp} from "@/types/navigation";
-import Button from "@/components/common/Button";
-import FrequencySelector from "@/components/common/FrequencySelector";
+import Button from "@/components/button/Button";
+import FrequencySelector from "@/components/habit/FrequencySelector";
 import {DayOfWeekSelector, DayOfMonthSelector} from "@/components/habit";
 import {useHabitStore} from "@/store/useHabitStore";
 import {DayOfWeek, DayOfMonth} from "@/types/habit";
@@ -20,18 +20,18 @@ const CreateHabitScreen = () => {
     if (habitName.trim()) {
       // 빈도에 따른 유효성 검사
       if (frequency === "weekly" && selectedWeekDays.length === 0) {
-        Alert.alert("알림", "요일을 선택해주세요.");
+        Alert.alert("요일을 선택해주세요.");
         return;
       }
       if (frequency === "monthly" && selectedMonthDays.length === 0) {
-        Alert.alert("알림", "일자를 선택해주세요.");
+        Alert.alert("일자를 선택해주세요.");
         return;
       }
 
       addHabit(habitName.trim());
       navigation.goBack();
     } else {
-      Alert.alert("알림", "습관 이름을 입력해주세요.");
+      Alert.alert("습관 이름을 입력해주세요.");
     }
   };
 

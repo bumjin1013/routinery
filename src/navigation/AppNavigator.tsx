@@ -17,6 +17,7 @@ const AppNavigator = () => {
           options={{
             title: "습관 생성",
             headerShown: true,
+            animation: "slide_from_bottom",
           }}
         />
       </Stack.Navigator>

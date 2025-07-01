@@ -1,5 +1,5 @@
 import {StyleSheet, Text, View} from "react-native";
-import Button from "@/components/common/Button";
+import Button from "@/components/button/Button";
 import {useNavigation} from "@react-navigation/native";
 import {RootStackNavigationProp} from "@/types/navigation";
 
