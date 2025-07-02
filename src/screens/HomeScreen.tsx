@@ -23,7 +23,7 @@ const HomeScreen = ({navigation}: {navigation: RootStackNavigationProp}) => {
         data={habits}
         renderItem={({item}: {item: any}) => <Habit habit={item} onPress={() => handleHabitPress(item)} onPressCheck={() => handleHabitCheck(item)} onPressDelete={() => handleDeleteHabit(item)} />}
         keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.listContainer}
+        contentContainerStyle={[styles.listContainer, habits.length === 0 && styles.emptyContainer]}
         ListEmptyComponent={<Empty />}
         scrollEnabled={habits.length > 0}
         ListFooterComponent={<View style={{height: bottom + 60}} />}
@@ -45,5 +45,9 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     padding: 10,
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: "center",
   },
 });
