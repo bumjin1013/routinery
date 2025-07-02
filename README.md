@@ -1,98 +1,195 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Routinery - 습관 관리 앱
 
-# Getting Started
+React Native로 개발된 습관 관리 애플리케이션입니다. 일일, 주간, 월간 습관을 설정하고 관리할 수 있습니다.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+## 🚀 기술 스택
 
-## Step 1: Start Metro
+- **React Native** 0.80.0
+- **TypeScript** 5.0.4
+- **React Navigation** 7.x
+- **Zustand** 5.0.6 (상태 관리)
+- **React Native MMKV** 3.3.0 (로컬 스토리지)
+- **Day.js** 1.11.13 (날짜 처리)
+- **React Native Reanimated** 3.18.0 (애니메이션)
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+## 📁 프로젝트 구조
 
-To start the Metro dev server, run the following command from the root of your React Native project:
-
-```sh
-# Using npm
-npm start
-
-# OR using Yarn
-yarn start
+```
+routinery/
+├── src/
+│   ├── components/          # 재사용 가능한 컴포넌트
+│   │   ├── button/         # 버튼 컴포넌트
+│   │   │   ├── Button.tsx
+│   │   │   ├── FloatingButton.tsx
+│   │   │   └── Index.ts
+│   │   ├── calendar/       # 캘린더 관련 컴포넌트
+│   │   │   ├── CalendarDay.tsx
+│   │   │   ├── CalendarGrid.tsx
+│   │   │   ├── CalendarHeader.tsx
+│   │   │   ├── CalendarModal.tsx
+│   │   │   ├── WeekHeader.tsx
+│   │   │   └── index.ts
+│   │   ├── habit/          # 습관 관련 컴포넌트
+│   │   │   ├── DayOfMonthSelector.tsx
+│   │   │   ├── DayOfWeekSelector.tsx
+│   │   │   ├── Empty.tsx
+│   │   │   ├── Habit.tsx
+│   │   │   ├── Schedule.tsx
+│   │   │   ├── ScheduleDisplay.tsx
+│   │   │   ├── SelectedDate.tsx
+│   │   │   ├── TotalHabit.tsx
+│   │   │   └── index.ts
+│   │   └── ReanimatedTest.tsx
+│   ├── constants/          # 상수 정의
+│   │   └── days.ts
+│   ├── hooks/              # 커스텀 훅
+│   │   ├── useCalendar.ts
+│   │   └── useHabitActions.ts
+│   ├── navigation/         # 네비게이션 설정
+│   │   └── AppNavigator.tsx
+│   ├── screens/            # 화면 컴포넌트
+│   │   ├── CreateHabitScreen.tsx
+│   │   └── HomeScreen.tsx
+│   ├── store/              # 상태 관리
+│   │   └── useHabitStore.ts
+│   ├── types/              # TypeScript 타입 정의
+│   │   ├── habit.ts
+│   │   └── navigation.ts
+│   └── utils/              # 유틸리티 함수
+│       ├── consecutiveDays.ts
+│       ├── dimentions.ts
+│       ├── habitFilter.ts
+│       └── habitStats.ts
+├── android/                # Android 설정
+├── ios/                    # iOS 설정
+├── __tests__/              # 테스트 파일
+└── App.tsx                 # 앱 진입점
 ```
 
-## Step 2: Build and run your app
+## 🧩 컴포넌트 구조
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+### 핵심 컴포넌트
 
-### Android
+#### 1. 습관 컴포넌트 (`src/components/habit/`)
 
-```sh
-# Using npm
-npm run android
+- **`Habit.tsx`**: 개별 습관 아이템 표시
+- **`TotalHabit.tsx`**: 습관 목록 전체 관리
+- **`Schedule.tsx`**: 습관 스케줄 설정
+- **`ScheduleDisplay.tsx`**: 설정된 스케줄 표시
+- **`DayOfWeekSelector.tsx`**: 요일 선택 컴포넌트
+- **`DayOfMonthSelector.tsx`**: 월 일자 선택 컴포넌트
+- **`Empty.tsx`**: 빈 상태 표시
+- **`SelectedDate.tsx`**: 선택된 날짜 표시
 
-# OR using Yarn
-yarn android
-```
+#### 2. 캘린더 컴포넌트 (`src/components/calendar/`)
 
-### iOS
+- **`CalendarModal.tsx`**: 캘린더 모달
+- **`CalendarGrid.tsx`**: 캘린더 그리드
+- **`CalendarDay.tsx`**: 개별 날짜 컴포넌트
+- **`CalendarHeader.tsx`**: 캘린더 헤더
+- **`WeekHeader.tsx`**: 요일 헤더
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+#### 3. 버튼 컴포넌트 (`src/components/button/`)
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+- **`Button.tsx`**: 기본 버튼
+- **`FloatingButton.tsx`**: 플로팅 버튼
 
-```sh
-bundle install
-```
+### 화면 컴포넌트 (`src/screens/`)
 
-Then, and every time you update your native dependencies, run:
+- **`HomeScreen.tsx`**: 메인 홈 화면
+- **`CreateHabitScreen.tsx`**: 습관 생성 화면
 
-```sh
-bundle exec pod install
-```
+## 🔧 유틸리티 함수
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+### 1. 습관 관련 유틸리티 (`src/utils/`)
 
-```sh
-# Using npm
+#### `consecutiveDays.ts`
+
+- **`calculateConsecutiveDays(habit: Habit): number`**: 습관의 연속일 계산
+- **`calcDaily(dates: string[]): number`**: 일일 습관 연속일 계산
+- **`calcWeekly(habit: Habit): number`**: 주간 습관 연속일 계산
+- **`calcMonthly(habit: Habit): number`**: 월간 습관 연속일 계산
+- **`calcMaxWeeklyGap(scheduleDays: number[]): number`**: 주간 스케줄 최대 간격 계산
+
+#### `habitStats.ts`
+
+- 습관 통계 관련 함수들
+
+#### `habitFilter.ts`
+
+- 습관 필터링 관련 함수들
+
+#### `dimentions.ts`
+
+- 화면 크기 관련 상수
+
+### 2. 커스텀 훅 (`src/hooks/`)
+
+#### `useHabitActions.ts`
+
+- 습관 CRUD 작업을 위한 커스텀 훅
+
+#### `useCalendar.ts`
+
+- 캘린더 관련 로직을 위한 커스텀 훅
+
+### 3. 상태 관리 (`src/store/`)
+
+#### `useHabitStore.ts`
+
+- Zustand를 사용한 습관 상태 관리
+- 습관 목록, 추가, 수정, 삭제 기능
+
+## 📱 주요 기능
+
+### 1. 습관 관리
+
+- **일일 습관**: 매일 수행하는 습관
+- **주간 습관**: 특정 요일에 수행하는 습관
+- **월간 습관**: 특정 날짜에 수행하는 습관
+
+### 2. 연속일 계산
+
+- 각 습관의 연속 수행 일수 자동 계산
+- 스케줄에 따른 정확한 연속일 계산
+
+### 3. 캘린더 뷰
+
+- 월간 캘린더로 습관 수행 현황 확인
+- 체크된 날짜 시각적 표시
+
+## 🚀 실행 방법
+
+```bash
+# 의존성 설치
+npm install
+
+# iOS 실행
 npm run ios
 
-# OR using Yarn
-yarn ios
+# Android 실행
+npm run android
+
+# 개발 서버 시작
+npm start
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+## 📋 타입 정의
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+### Habit 타입
 
-## Step 3: Modify your app
+```typescript
+type Habit = {
+  id: string;
+  title: string;
+  frequency: HabitFrequency; // "daily" | "weekly" | "monthly"
+  schedule?: HabitSchedule; // DayOfWeek[] | DayOfMonth[]
+  createdAt: Date;
+  checkedDate: string[]; // 체크된 날짜들 (YYYY-MM-DD 형식)
+};
+```
 
-Now that you have successfully run the app, let's make changes!
+## 🛠 개발 환경 설정
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
-
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
-
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
-# routinery
+- Node.js >= 18
+- React Native CLI
