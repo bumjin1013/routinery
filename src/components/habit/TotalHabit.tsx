@@ -1,26 +1,41 @@
-import {StyleSheet, Text, View, TouchableOpacity} from "react-native";
-import React from "react";
+import {StyleSheet, Text, View} from "react-native";
+import React, {useEffect} from "react";
+import Animated, {useSharedValue, useAnimatedStyle, withTiming} from "react-native-reanimated";
 import {useHabitStore} from "@/store/useHabitStore";
-import {calculateWeeklyProgress, getTodayCompletedHabits} from "@/utils/habitStats";
+import {calculateWeeklyProgress} from "@/utils/habitStats";
+import {getSelectedDateCheckedHabitsCount, getScheduledHabits} from "@/utils/habitFilter";
 
-const TotalHabit = ({onPress}: {onPress?: () => void}) => {
-  const {habits} = useHabitStore();
+const TotalHabit = () => {
+  const {habits, selectedDate} = useHabitStore();
   const {progressPercentage, totalActualChecks, totalPossibleChecks} = calculateWeeklyProgress(habits);
-  const todayCompleted = getTodayCompletedHabits(habits);
+  const selectedDateCompleted = getSelectedDateCheckedHabitsCount(habits, selectedDate);
+  const todayScheduledHabits = getScheduledHabits(habits, selectedDate);
 
-  const Container = onPress ? TouchableOpacity : View;
+  const progressAnim = useSharedValue(0);
+
+  useEffect(() => {
+    progressAnim.value = withTiming(progressPercentage, {
+      duration: 500,
+    });
+  }, [progressPercentage, progressAnim, habits]);
+
+  const animatedProgressStyle = useAnimatedStyle(() => {
+    return {
+      width: `${progressAnim.value}%`,
+    };
+  });
 
   return (
-    <Container style={styles.container} onPress={onPress}>
+    <View style={styles.container}>
       <View style={styles.statsContainer}>
         <View style={styles.statCard}>
-          <Text style={styles.statNumber}>{habits.length}</Text>
-          <Text style={styles.statLabel}>총 습관</Text>
+          <Text style={styles.statNumber}>{todayScheduledHabits.length}</Text>
+          <Text style={styles.statLabel}>오늘의 습관</Text>
         </View>
 
         <View style={styles.statCard}>
-          <Text style={styles.statNumber}>{todayCompleted}</Text>
-          <Text style={styles.statLabel}>오늘 완료</Text>
+          <Text style={styles.statNumber}>{selectedDateCompleted}</Text>
+          <Text style={styles.statLabel}>완료한 습관</Text>
         </View>
 
         <View style={styles.statCard}>
@@ -31,13 +46,13 @@ const TotalHabit = ({onPress}: {onPress?: () => void}) => {
 
       <View style={styles.progressContainer}>
         <View style={styles.progressBar}>
-          <View style={[styles.progressFill, {width: `${progressPercentage}%`}]} />
+          <Animated.View style={[styles.progressFill, animatedProgressStyle]} />
         </View>
         <Text style={styles.progressText}>
           {totalActualChecks} / {totalPossibleChecks} 완료
         </Text>
       </View>
-    </Container>
+    </View>
   );
 };
 

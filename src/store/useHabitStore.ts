@@ -69,10 +69,20 @@ export const useHabitStore = create<HabitStore>()(
               const checkedDate = habit.checkedDate || [];
               const isChecked = checkedDate.includes(selectedDateStr);
 
-              return {
-                ...habit,
-                checkedDate: isChecked ? checkedDate.filter((date) => date !== selectedDateStr) : [...checkedDate, selectedDateStr],
-              };
+              if (isChecked) {
+                // 체크 해제: 해당 날짜 제거
+                return {
+                  ...habit,
+                  checkedDate: checkedDate.filter((date) => date !== selectedDateStr),
+                };
+              } else {
+                // 체크: 날짜 추가 후 정렬 (최신순)
+                const newCheckedDate = [...checkedDate, selectedDateStr].sort().reverse();
+                return {
+                  ...habit,
+                  checkedDate: newCheckedDate,
+                };
+              }
             }
             return habit;
           }),
@@ -92,7 +102,6 @@ export const useHabitStore = create<HabitStore>()(
       storage: createJSONStorage(() => mmkvStorage),
       partialize: (state) => ({
         habits: state.habits,
-        selectedDate: state.selectedDate,
       }),
     },
   ),

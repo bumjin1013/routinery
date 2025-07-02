@@ -1,12 +1,11 @@
 import {StyleSheet, Text, View} from "react-native";
 import React from "react";
+import {DAYS_OF_WEEK} from "@/constants/days";
 
 const WeekHeader = () => {
-  const dayNames = ["일", "월", "화", "수", "목", "금", "토"];
-
   return (
     <View style={styles.weekHeader}>
-      {dayNames.map((day, index) => (
+      {DAYS_OF_WEEK.map((day, index) => (
         <View key={day} style={styles.dayHeader}>
           <Text style={[styles.dayHeaderText, index === 0 && styles.sundayText, index === 6 && styles.saturdayText]}>{day}</Text>
         </View>

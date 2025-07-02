@@ -17,6 +17,12 @@ export const getWeekRange = () => {
   };
 };
 
+// 날짜가 주 범위 내에 있는지
+const isDateInWeekRange = (dateStr: string, start: dayjs.Dayjs, end: dayjs.Dayjs): boolean => {
+  const date = dayjs(dateStr);
+  return date.isBetween(start, end, "day", "[]");
+};
+
 // 이번주 진행률 계산
 export const calculateWeeklyProgress = (habits: Habit[]) => {
   const {start, end, days} = getWeekRange();
@@ -26,29 +32,22 @@ export const calculateWeeklyProgress = (habits: Habit[]) => {
   let totalActualChecks = 0;
 
   habits.forEach((habit) => {
-    // 각 습관의 이번주 체크 가능 횟수 계산
     let possibleChecks = 0;
     let actualChecks = 0;
 
-    // checkedDate가 undefined인 경우 빈 배열로 처리
     const checkedDates = habit.checkedDate || [];
 
     // 일일 습관
     if (habit.frequency === "daily") {
       possibleChecks = weekDays;
-      actualChecks = checkedDates.filter((date) => {
-        const checkDate = dayjs(date);
-        return checkDate.isBetween(start, end, "day", "[]");
-      }).length;
+      // 한 번에 모든 날짜를 필터링
+      actualChecks = checkedDates.filter((date) => isDateInWeekRange(date, start, end)).length;
     }
     // 주간 습관
     else if (habit.frequency === "weekly") {
       if (habit.schedule) {
         possibleChecks = habit.schedule.length;
-        actualChecks = checkedDates.filter((date) => {
-          const checkDate = dayjs(date);
-          return checkDate.isBetween(start, end, "day", "[]");
-        }).length;
+        actualChecks = checkedDates.filter((date) => isDateInWeekRange(date, start, end)).length;
       }
     }
     // 월간 습관
@@ -57,17 +56,14 @@ export const calculateWeeklyProgress = (habits: Habit[]) => {
         const currentMonth = dayjs().month();
         const currentYear = dayjs().year();
 
-        // 이번주에 해당하는 월간 습관 날짜들 확인
+        // 월간 스케줄을 한 번에 계산
         const weekSchedule = habit.schedule.filter((day) => {
           const scheduleDate = dayjs(`${currentYear}-${currentMonth + 1}-${day}`);
           return scheduleDate.isBetween(start, end, "day", "[]");
         });
 
         possibleChecks = weekSchedule.length;
-        actualChecks = checkedDates.filter((date) => {
-          const checkDate = dayjs(date);
-          return checkDate.isBetween(start, end, "day", "[]");
-        }).length;
+        actualChecks = checkedDates.filter((date) => isDateInWeekRange(date, start, end)).length;
       }
     }
 
@@ -80,25 +76,4 @@ export const calculateWeeklyProgress = (habits: Habit[]) => {
     totalActualChecks,
     progressPercentage: totalPossibleChecks > 0 ? Math.round((totalActualChecks / totalPossibleChecks) * 100) : 0,
   };
-};
-
-// 오늘 완료된 습관 개수
-export const getTodayCompletedHabits = (habits: Habit[]) => {
-  const today = dayjs().format("YYYY-MM-DD");
-  return habits.filter((habit) => {
-    const checkedDates = habit.checkedDate || [];
-    return checkedDates.includes(today);
-  }).length;
-};
-
-// 이번주 완료된 습관 개수
-export const getWeeklyCompletedHabits = (habits: Habit[]) => {
-  const {start, end} = getWeekRange();
-  return habits.filter((habit) => {
-    const checkedDates = habit.checkedDate || [];
-    return checkedDates.some((date) => {
-      const checkDate = dayjs(date);
-      return checkDate.isBetween(start, end, "day", "[]");
-    });
-  }).length;
 };

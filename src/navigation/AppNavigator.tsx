@@ -2,7 +2,6 @@ import {createStackNavigator} from "@react-navigation/stack";
 import {NavigationContainer} from "@react-navigation/native";
 import HomeScreen from "@/screens/HomeScreen";
 import CreateHabitScreen from "@/screens/CreateHabitScreen";
-import AllHabitsScreen from "@/screens/AllHabitsScreen";
 import {RootStackParamList} from "@/types/navigation";
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -19,14 +18,6 @@ const AppNavigator = () => {
             title: "습관 생성",
             headerShown: true,
             animation: "slide_from_bottom",
-          }}
-        />
-        <Stack.Screen
-          name="AllHabits"
-          component={AllHabitsScreen}
-          options={{
-            title: "내 습관",
-            headerShown: true,
           }}
         />
       </Stack.Navigator>

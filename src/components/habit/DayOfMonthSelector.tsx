@@ -15,7 +15,7 @@ const DayOfMonthSelector = ({selectedDays, onDaysChange}: DayOfMonthSelectorProp
       if (selectedDays.includes(day)) {
         onDaysChange(selectedDays.filter((d) => d !== day));
       } else {
-        onDaysChange([...selectedDays, day].sort((a, b) => a - b));
+        onDaysChange([...selectedDays, day]);
       }
     },
     [selectedDays, onDaysChange],

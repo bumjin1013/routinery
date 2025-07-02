@@ -9,10 +9,9 @@ import Button from "../button/Button";
 interface CalendarProps {
   visible: boolean;
   onClose: () => void;
-  onConfirm?: (selectedDate: Dayjs) => void;
 }
 
-const CalendarModal = ({visible, onClose, onConfirm}: CalendarProps) => {
+const CalendarModal = ({visible, onClose}: CalendarProps) => {
   const {currentDate, selectedDate, setSelectedDate, goToPreviousMonth, goToNextMonth} = useCalendar();
   const {setSelectedDate: setStoreSelectedDate} = useHabitStore();
 
@@ -24,10 +23,6 @@ const CalendarModal = ({visible, onClose, onConfirm}: CalendarProps) => {
   const handleConfirm = () => {
     if (selectedDate) {
       setStoreSelectedDate(selectedDate);
-
-      if (onConfirm) {
-        onConfirm(selectedDate);
-      }
     }
     onClose();
   };

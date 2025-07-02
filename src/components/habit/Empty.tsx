@@ -11,7 +11,7 @@ const Empty = () => {
       <Text style={styles.icon}>📝</Text>
       <Text style={styles.title}>습관이 없습니다</Text>
       <Text style={styles.subtitle}>새로운 습관을 만들어보세요!</Text>
-      <Button title="습관 추가" onPress={() => navigation.navigate("CreateHabit")} style={styles.button} />
+      <Button title="습관 추가" onPress={() => navigation.navigate("CreateHabit", {habit: undefined})} style={styles.button} />
     </View>
   );
 };

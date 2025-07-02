@@ -1,5 +1,5 @@
-const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
-const path = require('path');
+const {getDefaultConfig, mergeConfig} = require("@react-native/metro-config");
+const path = require("path");
 
 /**
  * Metro configuration
@@ -10,16 +10,25 @@ const path = require('path');
 const config = {
   resolver: {
     alias: {
-      '@': path.resolve(__dirname, 'src'),
-      '@components': path.resolve(__dirname, 'src/components'),
-      '@screens': path.resolve(__dirname, 'src/screens'),
-      '@store': path.resolve(__dirname, 'src/store'),
-      '@types': path.resolve(__dirname, 'src/types'),
-      '@utils': path.resolve(__dirname, 'src/utils'),
-      '@hooks': path.resolve(__dirname, 'src/hooks'),
-      '@assets': path.resolve(__dirname, 'src/assets'),
+      "@": path.resolve(__dirname, "src"),
+      "@components": path.resolve(__dirname, "src/components"),
+      "@screens": path.resolve(__dirname, "src/screens"),
+      "@store": path.resolve(__dirname, "src/store"),
+      "@types": path.resolve(__dirname, "src/types"),
+      "@utils": path.resolve(__dirname, "src/utils"),
+      "@hooks": path.resolve(__dirname, "src/hooks"),
+      "@assets": path.resolve(__dirname, "src/assets"),
     },
   },
+  transformer: {
+    getTransformOptions: async () => ({
+      transform: {
+        experimentalImportSupport: false,
+        inlineRequires: true,
+      },
+    }),
+  },
+  resetCache: true,
 };
 
 module.exports = mergeConfig(getDefaultConfig(__dirname), config);
