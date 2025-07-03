@@ -1,27 +1,26 @@
-import React, {useState} from "react";
+import React from "react";
 import {StyleSheet, Text, View, TouchableOpacity} from "react-native";
 import {HabitFrequency} from "@/types/habit";
 
 interface FrequencyOption {
-  id: string;
   label: string;
-  value: string;
+  value: HabitFrequency;
 }
 
 interface ScheduleProps {
-  onFrequencyChange?: (frequency: HabitFrequency) => void;
-  selectedFrequency?: HabitFrequency;
+  onFrequencyChange: (frequency: HabitFrequency) => void;
+  selectedFrequency: HabitFrequency;
 }
 
 const Schedule = ({onFrequencyChange, selectedFrequency}: ScheduleProps) => {
   const frequencyOptions: FrequencyOption[] = [
-    {id: "daily", label: "매일", value: "daily"},
-    {id: "weekly", label: "주간", value: "weekly"},
-    {id: "monthly", label: "월간", value: "monthly"},
+    {label: "매일", value: "daily"},
+    {label: "주간", value: "weekly"},
+    {label: "월간", value: "monthly"},
   ];
 
   const handleSelect = (frequency: HabitFrequency) => {
-    onFrequencyChange?.(frequency);
+    onFrequencyChange(frequency);
   };
 
   return (
@@ -29,7 +28,7 @@ const Schedule = ({onFrequencyChange, selectedFrequency}: ScheduleProps) => {
       <Text style={styles.label}>빈도 선택</Text>
       <View style={styles.optionsContainer}>
         {frequencyOptions.map((option) => (
-          <TouchableOpacity key={option.id} style={[styles.option, selectedFrequency === option.value && styles.selectedOption]} onPress={() => handleSelect(option.value)} activeOpacity={0.7}>
+          <TouchableOpacity key={option.value} style={[styles.option, selectedFrequency === option.value && styles.selectedOption]} onPress={() => handleSelect(option.value)} activeOpacity={0.7}>
             <Text style={[styles.optionText, selectedFrequency === option.value && styles.selectedOptionText]}>{option.label}</Text>
           </TouchableOpacity>
         ))}
