@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo} from "react";
+import React, {useMemo} from "react";
 import {StyleSheet, Text, View, TouchableOpacity} from "react-native";
 import {DayOfMonth} from "@/types/habit";
 
@@ -10,26 +10,20 @@ interface DayOfMonthSelectorProps {
 const DayOfMonthSelector = ({selectedDays, onDaysChange}: DayOfMonthSelectorProps) => {
   const dayOptions: DayOfMonth[] = useMemo(() => Array.from({length: 31}, (_, i) => (i + 1) as DayOfMonth), []);
 
-  const handleDayToggle = useCallback(
-    (day: DayOfMonth) => {
-      onDaysChange((prev) => {
-        if (prev.includes(day)) {
-          return prev.filter((d) => d !== day);
-        } else {
-          return [...prev, day];
-        }
-      });
-    },
-    [onDaysChange],
-  );
+  const handleDayToggle = (day: DayOfMonth) => {
+    onDaysChange((prev) => {
+      if (prev.includes(day)) {
+        return prev.filter((d) => d !== day);
+      } else {
+        return [...prev, day];
+      }
+    });
+  };
 
-  const renderDayButton = useCallback(
-    (day: DayOfMonth) => (
-      <TouchableOpacity key={day} style={[styles.dayButton, selectedDays.includes(day) && styles.selectedDayButton]} onPress={() => handleDayToggle(day)} activeOpacity={0.7}>
-        <Text style={[styles.dayText, selectedDays.includes(day) && styles.selectedDayText]}>{day}</Text>
-      </TouchableOpacity>
-    ),
-    [selectedDays, handleDayToggle],
+  const renderDayButton = (day: DayOfMonth) => (
+    <TouchableOpacity key={day} style={[styles.dayButton, selectedDays.includes(day) && styles.selectedDayButton]} onPress={() => handleDayToggle(day)} activeOpacity={0.7}>
+      <Text style={[styles.dayText, selectedDays.includes(day) && styles.selectedDayText]}>{day}</Text>
+    </TouchableOpacity>
   );
 
   return (

@@ -1,4 +1,4 @@
-import React, {useCallback} from "react";
+import React from "react";
 import {StyleSheet, Text, View, TouchableOpacity} from "react-native";
 import {DayOfWeek} from "@/types/habit";
 import {DAY_OF_WEEK_OPTIONS} from "@/constants/days";
@@ -9,18 +9,15 @@ interface DayOfWeekSelectorProps {
 }
 
 const DayOfWeekSelector = ({selectedDays, onDaysChange}: DayOfWeekSelectorProps) => {
-  const handleDayToggle = useCallback(
-    (day: DayOfWeek) => {
-      onDaysChange((prev: DayOfWeek[]) => {
-        if (prev.includes(day)) {
-          return prev.filter((d) => d !== day);
-        } else {
-          return [...prev, day];
-        }
-      });
-    },
-    [onDaysChange],
-  );
+  const handleDayToggle = (day: DayOfWeek) => {
+    onDaysChange((prev: DayOfWeek[]) => {
+      if (prev.includes(day)) {
+        return prev.filter((d) => d !== day);
+      } else {
+        return [...prev, day];
+      }
+    });
+  };
 
   return (
     <View style={styles.container}>
