@@ -39,23 +39,14 @@ export const useHabitStore = create<HabitStore>()(
       selectedDate: dayjs().format("YYYY-MM-DD"),
       addHabit: (habit: Habit) => {
         set((state) => ({
-          habits: [
-            ...state.habits,
-            {
-              ...habit,
-              checkedDate: habit.checkedDate || [],
-            },
-          ],
+          habits: [...state.habits, habit],
         }));
       },
       editHabit: (habit: Habit) => {
         set((state) => ({
           habits: state.habits.map((h) => {
             if (h.id === habit.id) {
-              return {
-                ...habit,
-                checkedDate: habit.checkedDate || [],
-              };
+              return habit;
             }
             return h;
           }),
@@ -66,7 +57,7 @@ export const useHabitStore = create<HabitStore>()(
           habits: state.habits.map((habit) => {
             if (habit.id === id) {
               const selectedDateStr = state.selectedDate;
-              const checkedDate = habit.checkedDate || [];
+              const checkedDate = habit.checkedDate;
               const isChecked = checkedDate.includes(selectedDateStr);
 
               if (isChecked) {
