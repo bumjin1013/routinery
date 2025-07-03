@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import {Habit} from "@/types/habit";
+import {DayOfWeek, Habit} from "@/types/habit";
 
 // 일일 습관의 연속일 계산
 const calcDaily = (dates: string[]): number => {
@@ -35,7 +35,7 @@ const calcWeekly = (habit: Habit): number => {
     return 0;
   }
 
-  const scheduleDays = habit.schedule as number[];
+  const scheduleDays = habit.schedule as DayOfWeek[];
   const checkedDateSet = new Set(habit.checkedDate);
   const today = dayjs().startOf("day");
   const todayStr = today.format("YYYY-MM-DD");
@@ -46,7 +46,7 @@ const calcWeekly = (habit: Habit): number => {
     return 0;
   }
 
-  // 스케줄에 해당하는 체크된 날짜들만 필터링 (이미 정렬되어 있음)
+  // 스케줄에 해당하는 체크된 날짜들만 필터링
   const scheduledCheckedDates = habit.checkedDate.filter((date) => {
     const checkDate = dayjs(date);
     return scheduleDays.includes(checkDate.day());
@@ -57,7 +57,7 @@ const calcWeekly = (habit: Habit): number => {
   let consecutiveDays = 1;
   let currentDate = today;
 
-  // 이전 스케줄 날짜들 확인 (이미 최신순으로 정렬되어 있음)
+  // 이전 스케줄 날짜들 확인
   for (let i = 1; i < scheduledCheckedDates.length; i++) {
     const previousDate = dayjs(scheduledCheckedDates[i]);
     const daysDiff = currentDate.diff(previousDate, "day");

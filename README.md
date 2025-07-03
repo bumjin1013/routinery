@@ -50,14 +50,16 @@ routinery/
 │   │   │   ├── Schedule.tsx
 │   │   │   ├── ScheduleDisplay.tsx
 │   │   │   ├── SelectedDate.tsx
-│   │   │   ├── TotalHabit.tsx
+│   │   │   └── TotalHabit.tsx
 │   │   │   └── index.ts
-│   │   └── ReanimatedTest.tsx
 │   ├── constants/          # 상수 정의
 │   │   └── days.ts
 │   ├── hooks/              # 커스텀 훅
 │   │   ├── useCalendar.ts
-│   │   └── useHabitActions.ts
+│   │   ├── useCalendarModal.ts
+│   │   ├── useCreateHabit.ts
+│   │   ├── useHabitActions.ts
+│   │   └── index.ts
 │   ├── navigation/         # 네비게이션 설정
 │   │   └── AppNavigator.tsx
 │   ├── screens/            # 화면 컴포넌트
@@ -146,6 +148,14 @@ routinery/
 
 - 캘린더 관련 로직을 위한 커스텀 훅
 
+#### `useCalendarModal.ts`
+
+- 캘린더 모달의 비즈니스 로직을 담당하는 커스텀 훅
+
+#### `useCreateHabit.ts`
+
+- 습관 생성/수정 화면의 비즈니스 로직을 담당하는 커스텀 훅
+
 ### 3. 상태 관리 (`src/store/`)
 
 #### `useHabitStore.ts`
@@ -176,6 +186,9 @@ routinery/
 ```bash
 # 의존성 설치
 npm install
+
+# cocoapods 설치 (iOS)
+cd ios & pod install
 
 # iOS 실행
 npm run ios

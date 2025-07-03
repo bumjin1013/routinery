@@ -1,6 +1,6 @@
 import {useCallback} from "react";
 import {Dayjs} from "dayjs";
-import {useCalendar} from "./useCalendar";
+import {useCalendar} from "@/hooks";
 import {useHabitStore} from "@/store/useHabitStore";
 
 interface UseCalendarModalReturn {
