@@ -3,8 +3,6 @@ import {Habit, Empty, SelectedDate, TotalHabit} from "@/components/habit";
 import {useHabitStore} from "@/store/useHabitStore";
 import {RootStackNavigationProp} from "@/types/navigation";
 import {useSafeAreaInsets} from "react-native-safe-area-context";
-import {useState} from "react";
-import {CalendarModal} from "@/components/calendar";
 import {FloatingButton} from "@/components/button/Index";
 import {useHabitActions} from "@/hooks/useHabitActions";
 
@@ -13,11 +11,9 @@ const HomeScreen = ({navigation}: {navigation: RootStackNavigationProp}) => {
   const {top, bottom} = useSafeAreaInsets();
   const {handleHabitPress, handleHabitCheck, handleDeleteHabit} = useHabitActions();
 
-  const [isCalendarModalVisible, setIsCalendarModalVisible] = useState(false);
-
   return (
     <View style={[styles.container, {paddingTop: top}]}>
-      <SelectedDate onPress={() => setIsCalendarModalVisible(true)} />
+      <SelectedDate />
       {habits.length > 0 && <TotalHabit />}
       <FlatList
         data={habits}
@@ -30,7 +26,6 @@ const HomeScreen = ({navigation}: {navigation: RootStackNavigationProp}) => {
         showsVerticalScrollIndicator={false}
       />
       <FloatingButton onPress={() => navigation.navigate("CreateHabit", {habit: undefined})} />
-      <CalendarModal visible={isCalendarModalVisible} onClose={() => setIsCalendarModalVisible(false)} />
     </View>
   );
 };

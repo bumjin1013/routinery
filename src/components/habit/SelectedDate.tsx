@@ -1,15 +1,20 @@
 import {StyleSheet, Text, TouchableOpacity} from "react-native";
-import React from "react";
+import React, {useState} from "react";
 import dayjs from "dayjs";
 import {useHabitStore} from "@/store/useHabitStore";
+import {CalendarModal} from "../calendar";
 
-const SelectedDate = ({onPress}: {onPress: () => void}) => {
+const SelectedDate = () => {
   const {selectedDate} = useHabitStore();
+  const [isCalendarModalVisible, setIsCalendarModalVisible] = useState(false);
 
   return (
-    <TouchableOpacity style={styles.container} onPress={onPress}>
-      <Text style={styles.date}>{dayjs(selectedDate).format("YYYY년 MM월 DD일")}</Text>
-    </TouchableOpacity>
+    <>
+      <TouchableOpacity style={styles.container} onPress={() => setIsCalendarModalVisible(true)}>
+        <Text style={styles.date}>{dayjs(selectedDate).format("YYYY년 MM월 DD일")}</Text>
+      </TouchableOpacity>
+      <CalendarModal visible={isCalendarModalVisible} onClose={() => setIsCalendarModalVisible(false)} />
+    </>
   );
 };
 
