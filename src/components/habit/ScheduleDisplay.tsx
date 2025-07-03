@@ -28,28 +28,12 @@ const getDayStyle = (isChecked: boolean, isPast: boolean, isFuture: boolean, isT
   return {backgroundColor, textColor};
 };
 
-const DayCircle = ({
-  day,
-  isChecked,
-  isPast,
-  isFuture,
-  isToday,
-  circleStyle,
-  textStyle,
-}: {
-  day: string | number;
-  isChecked: boolean;
-  isPast: boolean;
-  isFuture: boolean;
-  isToday: boolean;
-  circleStyle: any;
-  textStyle: any;
-}) => {
+const DayCircle = ({day, isChecked, isPast, isFuture, isToday}: {day: string | number; isChecked: boolean; isPast: boolean; isFuture: boolean; isToday: boolean}) => {
   const {backgroundColor, textColor} = getDayStyle(isChecked, isPast, isFuture, isToday);
 
   return (
-    <View style={[circleStyle, isToday && !isChecked ? styles.todayCircle : {}, {backgroundColor}]}>
-      <Text style={[textStyle, isToday && !isChecked ? styles.todayText : {}, {color: textColor}]}>{day}</Text>
+    <View style={[styles.dayCircle, isToday && !isChecked ? styles.todayCircle : {}, {backgroundColor}]}>
+      <Text style={[styles.dayText, isToday && !isChecked ? styles.todayText : {}, {color: textColor}]}>{day}</Text>
     </View>
   );
 };
@@ -72,7 +56,7 @@ const ScheduleDisplay = ({habit}: ScheduleDisplayProps) => {
                 return checkDate.getDay() === index;
               }) || false;
 
-            return <DayCircle key={day} day={day} isChecked={isChecked} isPast={isPast} isFuture={isFuture} isToday={isToday} circleStyle={styles.dayCircle} textStyle={styles.dayText} />;
+            return <DayCircle key={day} day={day} isChecked={isChecked} isPast={isPast} isFuture={isFuture} isToday={isToday} />;
           })}
         </View>
       );
@@ -110,7 +94,7 @@ const ScheduleDisplay = ({habit}: ScheduleDisplayProps) => {
                   return checkDate.getDay() === index && checkDate >= startOfWeek && checkDate <= endOfWeek;
                 }) || false;
 
-              return <DayCircle key={day} day={day} isChecked={isChecked} isPast={isPast} isFuture={isFuture} isToday={isToday} circleStyle={styles.dayCircle} textStyle={styles.dayText} />;
+              return <DayCircle key={day} day={day} isChecked={isChecked} isPast={isPast} isFuture={isFuture} isToday={isToday} />;
             })}
           </View>
         );
@@ -137,7 +121,7 @@ const ScheduleDisplay = ({habit}: ScheduleDisplayProps) => {
                   return checkDate.getDate() === day && checkDate.getMonth() === currentMonth && checkDate.getFullYear() === currentYear;
                 }) || false;
 
-              return <DayCircle key={day} day={day} isChecked={isChecked} isPast={isPast} isFuture={isFuture} isToday={isToday} circleStyle={styles.monthCircle} textStyle={styles.monthText} />;
+              return <DayCircle key={day} day={day} isChecked={isChecked} isPast={isPast} isFuture={isFuture} isToday={isToday} />;
             })}
           </View>
         );

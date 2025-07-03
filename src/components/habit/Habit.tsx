@@ -91,9 +91,9 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 16,
     right: 16,
-    width: 32,
-    height: 32,
-    borderRadius: 16,
+    width: 22,
+    height: 22,
+    borderRadius: 11,
     backgroundColor: "#9E9E9E",
     justifyContent: "center",
     alignItems: "center",
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
   },
   checkIcon: {
     color: "#fff",
-    fontSize: 18,
+    fontSize: 12,
     fontWeight: "bold",
   },
 });
