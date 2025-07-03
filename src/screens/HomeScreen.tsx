@@ -4,7 +4,7 @@ import {useHabitStore} from "@/store/useHabitStore";
 import {RootStackNavigationProp} from "@/types/navigation";
 import {useSafeAreaInsets} from "react-native-safe-area-context";
 import {FloatingButton} from "@/components/button/Index";
-import {useHabitActions} from "@/hooks/useHabitActions";
+import {useHabitActions} from "@/hooks";
 
 const HomeScreen = ({navigation}: {navigation: RootStackNavigationProp}) => {
   const {habits} = useHabitStore();

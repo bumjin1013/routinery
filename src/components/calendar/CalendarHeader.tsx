@@ -9,15 +9,13 @@ interface CalendarHeaderProps {
 }
 
 const CalendarHeader = ({currentDate, onPreviousMonth, onNextMonth}: CalendarHeaderProps) => {
-  const monthNames = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"];
-
   return (
     <View style={styles.header}>
       <TouchableOpacity onPress={onPreviousMonth} style={styles.navButton}>
         <Text style={styles.navButtonText}>‹</Text>
       </TouchableOpacity>
       <Text style={styles.monthYearText}>
-        {currentDate.year()}년 {monthNames[currentDate.month()]}
+        {currentDate.year()}년 {currentDate.month() + 1}월
       </Text>
       <TouchableOpacity onPress={onNextMonth} style={styles.navButton}>
         <Text style={styles.navButtonText}>›</Text>

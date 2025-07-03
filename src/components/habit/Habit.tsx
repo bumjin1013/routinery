@@ -25,7 +25,7 @@ const Habit = ({habit, onPress, onPressCheck, onPressDelete, showCheck = true}: 
   // 선택된 날짜에 체크 가능한지
   const isCheckable = useMemo(() => {
     const scheduledHabits = getScheduledHabits([habit], selectedDate);
-    console.log("af", scheduledHabits);
+
     return scheduledHabits.length > 0;
   }, [habit, selectedDate]);
 

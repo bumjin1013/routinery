@@ -1,9 +1,7 @@
 import {StyleSheet, View, Modal, Pressable} from "react-native";
 import React from "react";
-import {Dayjs} from "dayjs";
 import {CalendarHeader, WeekHeader, CalendarGrid} from "@/components/calendar";
-import {useCalendar} from "@/hooks/useCalendar";
-import {useHabitStore} from "@/store/useHabitStore";
+import {useCalendarModal} from "@/hooks/useCalendarModal";
 import Button from "../button/Button";
 
 interface CalendarProps {
@@ -12,20 +10,7 @@ interface CalendarProps {
 }
 
 const CalendarModal = ({visible, onClose}: CalendarProps) => {
-  const {currentDate, selectedDate, setSelectedDate, goToPreviousMonth, goToNextMonth} = useCalendar();
-  const {setSelectedDate: setStoreSelectedDate} = useHabitStore();
-
-  const handleDateSelect = (day: number) => {
-    const newSelectedDate = currentDate.date(day);
-    setSelectedDate(newSelectedDate);
-  };
-
-  const handleConfirm = () => {
-    if (selectedDate) {
-      setStoreSelectedDate(selectedDate);
-    }
-    onClose();
-  };
+  const {currentDate, selectedDate, goToPreviousMonth, goToNextMonth, handleDateSelect, handleConfirm, isConfirmDisabled} = useCalendarModal(onClose);
 
   return (
     <Modal visible={visible} transparent={true} animationType="fade" onRequestClose={onClose}>
@@ -35,7 +20,7 @@ const CalendarModal = ({visible, onClose}: CalendarProps) => {
           <CalendarHeader currentDate={currentDate} onPreviousMonth={goToPreviousMonth} onNextMonth={goToNextMonth} />
           <WeekHeader />
           <CalendarGrid currentDate={currentDate} selectedDate={selectedDate} onDateSelect={handleDateSelect} />
-          <Button title="확인" onPress={handleConfirm} disabled={!selectedDate} />
+          <Button title="확인" onPress={handleConfirm} disabled={isConfirmDisabled} />
         </View>
       </View>
     </Modal>

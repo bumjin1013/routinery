@@ -1,21 +1,26 @@
-import React from "react";
+import React, {useCallback} from "react";
 import {StyleSheet, Text, View, TouchableOpacity} from "react-native";
 import {DayOfWeek} from "@/types/habit";
 import {DAY_OF_WEEK_OPTIONS} from "@/constants/days";
 
 interface DayOfWeekSelectorProps {
   selectedDays: DayOfWeek[];
-  onDaysChange: (days: DayOfWeek[]) => void;
+  onDaysChange: React.Dispatch<React.SetStateAction<DayOfWeek[]>>;
 }
 
 const DayOfWeekSelector = ({selectedDays, onDaysChange}: DayOfWeekSelectorProps) => {
-  const handleDayToggle = (day: DayOfWeek) => {
-    if (selectedDays.includes(day)) {
-      onDaysChange(selectedDays.filter((d) => d !== day));
-    } else {
-      onDaysChange([...selectedDays, day]);
-    }
-  };
+  const handleDayToggle = useCallback(
+    (day: DayOfWeek) => {
+      onDaysChange((prev: DayOfWeek[]) => {
+        if (prev.includes(day)) {
+          return prev.filter((d) => d !== day);
+        } else {
+          return [...prev, day];
+        }
+      });
+    },
+    [onDaysChange],
+  );
 
   return (
     <View style={styles.container}>

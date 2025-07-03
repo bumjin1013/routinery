@@ -1,78 +1,15 @@
-import React, {useEffect, useLayoutEffect, useState} from "react";
-import {StyleSheet, View, TextInput, Alert, TouchableWithoutFeedback, Keyboard} from "react-native";
+import React from "react";
+import {StyleSheet, View, TextInput, TouchableWithoutFeedback, Keyboard} from "react-native";
 import {RootStackNavigationProp, RootStackParamList} from "@/types/navigation";
 import Button from "@/components/button/Button";
 import {DayOfWeekSelector, DayOfMonthSelector, Schedule} from "@/components/habit";
-import {useHabitStore} from "@/store/useHabitStore";
-import {DayOfWeek, DayOfMonth, HabitFrequency} from "@/types/habit";
 import {RouteProp} from "@react-navigation/native";
+import {useCreateHabit} from "@/hooks";
 
-const CreateHabitScreen = ({navigation, route}: {navigation: RootStackNavigationProp; route: RouteProp<RootStackParamList, "CreateHabit">}) => {
+const CreateHabitScreen = ({route}: {navigation: RootStackNavigationProp; route: RouteProp<RootStackParamList, "CreateHabit">}) => {
   const {habit} = route.params || {};
 
-  const [habitName, setHabitName] = useState("");
-  const [frequency, setFrequency] = useState<HabitFrequency>("daily");
-
-  const [weeklySchedule, setWeeklySchedule] = useState<DayOfWeek[]>([]);
-  const [monthlySchedule, setMonthlySchedule] = useState<DayOfMonth[]>([]);
-
-  const {addHabit, editHabit} = useHabitStore();
-
-  const isEdit = !!habit;
-
-  useLayoutEffect(() => {
-    navigation.setOptions({title: habit ? "습관 수정" : "습관 생성"});
-  }, [navigation, habit]);
-
-  useEffect(() => {
-    if (isEdit) {
-      setHabitName(habit.title);
-      setFrequency(habit.frequency);
-
-      if (habit.frequency === "weekly" && habit.schedule) {
-        setWeeklySchedule(habit.schedule as DayOfWeek[]);
-      } else if (habit.frequency === "monthly" && habit.schedule) {
-        setMonthlySchedule(habit.schedule as DayOfMonth[]);
-      }
-    }
-  }, [isEdit, habit]);
-
-  const handleCreateHabit = () => {
-    if (habitName.trim()) {
-      if (frequency === "weekly" && weeklySchedule?.length === 0) {
-        Alert.alert("요일을 선택해주세요.");
-        return;
-      }
-      if (frequency === "monthly" && monthlySchedule?.length === 0) {
-        Alert.alert("일자를 선택해주세요.");
-        return;
-      }
-
-      const sortedSchedule = frequency === "weekly" ? weeklySchedule.sort((a, b) => a - b) : monthlySchedule.sort((a, b) => a - b);
-
-      if (isEdit) {
-        editHabit({
-          ...habit,
-          title: habitName.trim(),
-          frequency,
-          schedule: sortedSchedule,
-          checkedDate: [],
-        });
-      } else {
-        addHabit({
-          id: Date.now().toString(),
-          title: habitName.trim(),
-          frequency,
-          schedule: sortedSchedule,
-          createdAt: new Date(),
-          checkedDate: [],
-        });
-      }
-      navigation.goBack();
-    } else {
-      Alert.alert("습관 이름을 입력해주세요.");
-    }
-  };
+  const {habitName, setHabitName, frequency, setFrequency, weeklySchedule, setWeeklySchedule, monthlySchedule, setMonthlySchedule, handleCreateHabit} = useCreateHabit(habit);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

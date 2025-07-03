@@ -4,7 +4,7 @@ import {DayOfMonth} from "@/types/habit";
 
 interface DayOfMonthSelectorProps {
   selectedDays: DayOfMonth[];
-  onDaysChange: (days: DayOfMonth[]) => void;
+  onDaysChange: React.Dispatch<React.SetStateAction<DayOfMonth[]>>;
 }
 
 const DayOfMonthSelector = ({selectedDays, onDaysChange}: DayOfMonthSelectorProps) => {
@@ -12,13 +12,15 @@ const DayOfMonthSelector = ({selectedDays, onDaysChange}: DayOfMonthSelectorProp
 
   const handleDayToggle = useCallback(
     (day: DayOfMonth) => {
-      if (selectedDays.includes(day)) {
-        onDaysChange(selectedDays.filter((d) => d !== day));
-      } else {
-        onDaysChange([...selectedDays, day]);
-      }
+      onDaysChange((prev) => {
+        if (prev.includes(day)) {
+          return prev.filter((d) => d !== day);
+        } else {
+          return [...prev, day];
+        }
+      });
     },
-    [selectedDays, onDaysChange],
+    [onDaysChange],
   );
 
   const renderDayButton = useCallback(
