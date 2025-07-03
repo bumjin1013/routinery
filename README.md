@@ -122,9 +122,7 @@ routinery/
 
 - **`calculateConsecutiveDays(habit: Habit): number`**: 습관의 연속일 계산
 - **`calcDaily(dates: string[]): number`**: 일일 습관 연속일 계산
-- **`calcWeekly(habit: Habit): number`**: 주간 습관 연속일 계산
-- **`calcMonthly(habit: Habit): number`**: 월간 습관 연속일 계산
-- **`calcMaxWeeklyGap(scheduleDays: number[]): number`**: 주간 스케줄 최대 간격 계산
+- **`calcScheduled(habit: Habit): number`**: 주간/월간 습관 연속일 계산
 
 #### `habitStats.ts`
 
